@@ -1,0 +1,7 @@
+(fp_lib_table
+  (lib (name ESP32_DEV)(type KiCad)(uri ${KIPRJMOD}/footprints/ESP32_DEV.pretty)(options "")(descr ""))
+  (lib (name ExperimentierenV2)(type KiCad)(uri ${KIPRJMOD}/test/ExperimentierenV2.pretty)(options "")(descr ""))
+  (lib (name loc)(type KiCad)(uri ${KIPRJMOD}/footprints)(options "")(descr ""))
+  (lib (name rota)(type KiCad)(uri C:/Users/Jan/Desktop/ESPeriment/Rotary_Encoder.pretty)(options "")(descr ""))
+  (lib (name mix)(type KiCad)(uri C:/Users/Jan/Desktop/test/Experimentieren/footprints)(options "")(descr ""))
+)

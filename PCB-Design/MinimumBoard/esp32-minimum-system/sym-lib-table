@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name ESP32_DEV)(type Legacy)(uri ${KIPRJMOD}/ESP32_DEV.lib)(options "")(descr ""))
+  (lib (name Experimentieren-rescue)(type Legacy)(uri ${KIPRJMOD}/Experimentieren-rescue.lib)(options "")(descr ""))
+)

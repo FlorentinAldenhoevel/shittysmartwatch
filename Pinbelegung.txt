@@ -1,0 +1,65 @@
+SD:
+PIN_MISO  27  // GPIO27 Lila
+PIN_MOSI  26  // GPIO26 Rot
+PIN_SCK   25  // GIPO25 Schwartz
+PIN_CS    33  // GPIO33	Blau
+
+
+IMU:
+SDA	21	Pink
+SCL	22	Blau
+
+Rotary Encoder:
+a	37 	Braun
+b	38	Gelb
+c	32	Grün
+
+Shitty Addon:
+GPIO1: 12	Pink
+GPIO2: 13	Grau
+
+
+
+BoardDesign:
+
+SD: VSPI
+PIN_MISO  GPIO19
+PIN_MOSI  GPIO23
+PIN_SCK   GPIO18
+PIN_CS    GPIO5
+
+
+IMU:
+SDA	21
+SCL	22
+
+Rotary Encoder:
+a	33
+b	34
+c	35
+
+Shitty Addon:
+GPIO1: 25
+GPIO2: 26
+
+Display: HSPI
+MISO	GPIO12
+MOSI	GPIO13
+SCK	GPIO14/PIN7
+CS	GPIO15/PIN21
+
+
+free pins:
+
+2
+4
+5  outputs PWM signal at boot 
+12 boot fail if pulled high
+13
+14 outputs PWM signal at boot
+15 outputs PWM signal at boot
+18
+19
+23
+32
+39
