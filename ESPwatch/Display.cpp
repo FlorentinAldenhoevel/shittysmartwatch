@@ -8,6 +8,7 @@ Display::Display()
 
 void Display::init()
 {
+  logmessage("init()");
   tft.init();
   tft.setRotation(3);
   tft.fillScreen(TFT_WHITE);
@@ -15,7 +16,7 @@ void Display::init()
 
 void Display::logmessage(String message)
 {
-  //Serial.println(getName() + ": " + message);
+  Serial.println("Display: " + message);
 }
 
 void Display::fillClientarea(uint16_t color)
@@ -23,7 +24,13 @@ void Display::fillClientarea(uint16_t color)
   tft.fillRect(0, FIRST_ROW, 240, 135-FIRST_ROW, color);
 }
 
-void Display::drawString(int x, int y, int h, int w, uint16_t color)
+void Display::drawString(String text,int x, int y, int font)
 {
-//  tft.drawString(x, y, h, w, color);
+  logmessage("drawString(\"" + text + "\" at " + x + ", " + y + " in Font " + font + "\"");
+  tft.drawString(text, x, y, font);
+}
+
+void Display::setTextColor(uint16_t color, uint16_t backgroundcolor)
+{
+  tft.setTextColor(color, backgroundcolor);
 }

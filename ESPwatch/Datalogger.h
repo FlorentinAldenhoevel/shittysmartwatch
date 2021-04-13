@@ -26,6 +26,7 @@ class Datalogger: public App
   virtual void backgroundloop();
   virtual bool drawnotification(int iconIndex);
   virtual String getName();
+  
   private:
 };
 

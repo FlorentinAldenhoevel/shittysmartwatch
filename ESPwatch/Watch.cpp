@@ -3,22 +3,22 @@
 
 Watch::Watch()
 {
-  }
+}
 
 void Watch::setup()
 {
   App::setup();
-  }
+}
 
 bool Watch::loop()
 {
   return App::loop();
-  }
+}
 
 void Watch::backgroundloop()
 {
   App::backgroundloop();
-  }
+}
 
 bool Watch::drawnotification(int iconIndex)
 {
@@ -27,5 +27,5 @@ bool Watch::drawnotification(int iconIndex)
 
 String Watch::getName()
 {
-  return ("Watch");  
+  return "Watch";  
 }

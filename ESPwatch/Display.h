@@ -28,9 +28,12 @@ class Display
   Display();
   void init();
   void fillClientarea(uint16_t color);
+  void drawString(String text, int x, int y, int font); 
+  void setTextColor(uint16_t color, uint16_t backgroundcolor);
+  
   protected:
   void logmessage(String message);
-  void drawString(int x, int y, int h, int w, uint16_t color); 
+  
   private:
 };
 

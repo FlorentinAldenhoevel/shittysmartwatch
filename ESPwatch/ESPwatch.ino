@@ -1,3 +1,4 @@
+#include "ESPWatch_config.h"
 #include "App.h"
 #include "Watch.h"
 #include "Wasserwage.h"
@@ -5,43 +6,50 @@
 #include "Display.h"
 #include <RotaryEncoder.h>
 
-
-#define GREY 0x5AEB
-#define TEXTHEIGHT 19
-#define FIRST_ROW 32
-
-#define MAXAPPS 5
-
-#define PIN_IN1 37
-#define PIN_IN2 38
-
 int menuselection = -1;
 App* foregroundapp = NULL;
 App* apps[MAXAPPS];
 
-RotaryEncoder encoder(PIN_IN1, PIN_IN2, RotaryEncoder::LatchMode::TWO03);
-
+RotaryEncoder encoder(PIN_ENC_A, PIN_ENC_B, RotaryEncoder::LatchMode::TWO03);
 
 void setup() {
-  Serial.begin(9600);
-  Serial.println("Mainsetup wurde aufgerufen");
+  Serial.begin(115200);
+  while(!Serial) {};
+  Serial.println("setup(): Hello!");
+
   apps[0] = new Watch();
   apps[1] = new Wasserwage();
   apps[2] = new Datalogger();
-  Serial.print("apps[0] is: ");
-  Serial.println(apps[0]->getName());
-  //startApp(apps[0]);
+  
+  Serial.println("setup(): Setting up Display");
   display = Display();
-  display.init();
-  Serial.println("Mainsetup is done");
+  display.init(); 
+
+  Serial.println("setup(): Setting up GPIO-pins");
+  digitalWrite(PIN_ENC_BUTTON, LOW);
+  pinMode(PIN_ENC_BUTTON, INPUT_PULLDOWN);
+
+  digitalWrite(PIN_BUTTON_UTIL, LOW);
+  pinMode(PIN_BUTTON_UTIL, INPUT_PULLDOWN);
+
+  digitalWrite(PIN_BUTTON_EXIT, LOW);
+  pinMode(PIN_BUTTON_EXIT, INPUT_PULLDOWN);
+
+  Serial.println("Setup(): Done");
 }
 
-void startApp(App *app)
+//FIX ME!!
+/* 
+void startApp(App* app)
 {
-    assert(foregroundapp == 0);
+    assert(foregroundapp == NULL);
+
+    Serial.println("startApp(" + app->getName() + ")");
     foregroundapp = app;
-    Serial.println("Starting " + app->getName());
+
+    foregroundapp->start();
 }
+*/
 
 void loop() {
   if (foregroundapp != NULL)
@@ -49,14 +57,15 @@ void loop() {
     bool done = foregroundapp->loop();
     if(done)
     {
-      Serial.println(foregroundapp->getName() + " returned Done");
+      Serial.println("loop: " + foregroundapp->getName() + " done");
       foregroundapp = NULL;
+      menuselection = -1;
     }
   }
   else
   {
     menu();
-    }
+  }
   for(int i = 0; i<MAXAPPS; i++)
   {
     if (apps[i] != NULL)
@@ -70,17 +79,41 @@ void menu()
 {
   encoder.tick();
   
-  
-  //tft.fillRect(0, 51, 240, 19, TFT_RED);
-  //tft.setTextColor(TFT_BLACK, TFT_BLACK);
   int newmenuselection = (int) ((encoder.getPosition()/2));
+  
+  if(digitalRead(PIN_ENC_BUTTON))
+  {
+    int startappindex;
+    if(newmenuselection < 0)
+    {
+      int temp = MAXAPPS - newmenuselection + 1;
+      startappindex = temp % MAXAPPS;
+    }
+    else
+    {
+      startappindex = (1 + newmenuselection) % MAXAPPS; 
+    }
+
+    //startApp(apps[startappindex]);
+    //copy of startApp()
+    assert(foregroundapp == NULL);
+
+    Serial.println("startApp(" + apps[startappindex]->getName() + ")");
+    foregroundapp = apps[startappindex];
+
+    foregroundapp->start();
+    
+    return;
+  }
+ 
   if(menuselection != newmenuselection)
   {
+    Serial.println("menu(): Drawing menu");
     menuselection = newmenuselection;
-    display.fillClientarea(TFT_RED);
-    Serial.println("----------------------------------------------------------------------");
-    Serial.println(menuselection);
-  
+    display.fillClientarea(TFT_WHITE);
+
+
+    
     for(int z=0; z<5; z++)
     {
       int appindex;
@@ -94,8 +127,6 @@ void menu()
         appindex = (z + menuselection) % MAXAPPS; 
       }
       
-      Serial.println(appindex);
-      
       String text; 
       if(apps[appindex] != NULL)
       {
@@ -108,14 +139,14 @@ void menu()
       
       if(z==1)
       {
-        tft.setTextColor(TFT_RED, TFT_RED); //highlight selected Programm
+        display.setTextColor(TFT_RED, TFT_RED); // highlight selected App
       }
       else
       {
-        tft.setTextColor(TFT_BLACK, TFT_BLACK);
+        display.setTextColor(TFT_BLACK, TFT_BLACK);
       }
       
-      tft.drawString(text, 102, FIRST_ROW+(z*TEXTHEIGHT), 4);
+      display.drawString(text, 2, FIRST_ROW+(z*TEXTHEIGHT), 4);
     }  //of for
   } //of new menuselection
 }

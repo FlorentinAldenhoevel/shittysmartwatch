@@ -1,4 +1,5 @@
-
+#include "ESPWatch_config.h"
+#include "Display.h"
 #include "App.h"
 
 App::App()
@@ -8,19 +9,33 @@ App::App()
 
 void App::setup()
 {
-  logmessage("setup was called");
-  }
+  logmessage("setup()");
+}
 
 bool App::loop()
 {
-  logmessage("loop is running");
-  return false;
+  logmessage("loop()");
+
+  bool done = !digitalRead(PIN_BUTTON_EXIT);
+  if (done) {
+    logmessage("loop(): Done");
   }
+  
+  return done;
+}
+
+void App::start()
+{
+  logmessage("start()");
+  display.fillClientarea(TFT_BLUE); 
+  display.setTextColor(TFT_WHITE, TFT_WHITE); 
+  display.drawString(getName(), 2, 32, 4);
+}
 
 void App::backgroundloop()
 {
-  logmessage("backgroundloop is running");
-  }
+  logmessage("backgroundloop()");
+}
 
 bool App::drawnotification(int iconIndex)
 {
@@ -29,10 +44,10 @@ bool App::drawnotification(int iconIndex)
 
 String App::getName()
 {
-  return ("GenericApp");  
+  return "App";  
 }
 
 void App::logmessage(String message)
 {
-  //Serial.println(getName() + ": " + message);
-  }
+  // Serial.println(getName() + ": " + message);
+}

@@ -27,5 +27,5 @@ bool Datalogger::drawnotification(int iconIndex)
 
 String Datalogger::getName()
 {
-  return ("Datalogger");  
+  return "Datalogger";  
 }
