@@ -14,6 +14,7 @@
 #ifndef Watch_h
 #define Watch_h
 
+#include "ESPWatch_config.h"
 #include "App.h"
 #include "Arduino.h"
 
@@ -26,7 +27,7 @@ class Watch: public App
   virtual void backgroundloop();
   virtual bool drawnotification(int iconIndex);
   virtual String getName();
-  
+  //virtual void start();
   private:
 };
 
